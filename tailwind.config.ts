@@ -23,6 +23,53 @@ const config: Config = {
       black: '#050301',
       red: '#D0312D',
     },
+    fontSize: {
+      13: [
+        '13px',
+        {
+          lineHeight: '18px',
+        },
+      ],
+      15: [
+        '15px',
+        {
+          lineHeight: '20px',
+        },
+      ],
+      18: [
+        '18px',
+        {
+          lineHeight: '24px',
+        },
+      ],
+      22: [
+        '22px',
+        {
+          lineHeight: '26px',
+        },
+      ],
+      36: [
+        '36px',
+        {
+          lineHeight: '42px',
+        },
+      ],
+      48: [
+        '48px',
+        {
+          lineHeight: '54px',
+        },
+      ],
+      72: [
+        '72px',
+        {
+          lineHeight: '72px',
+        },
+      ],
+    },
+    fontFamily: {
+      barlow: ['var(--font-barlow)', 'sans-serif'],
+    },
   },
   plugins: [],
 };

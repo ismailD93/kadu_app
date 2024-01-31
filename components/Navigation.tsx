@@ -1,8 +1,7 @@
 'use client';
 
 import {FC, useEffect, useState} from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import NextImage from 'next/image';
 import classNames from 'classnames';
 import BurgerMenuIcon from '../icons/BurgerMenuIcon';
 
@@ -36,14 +35,19 @@ const Navigation: FC<NavigationProps> = ({className}) => {
 
   return (
     <>
-      <div className='boxed-layout fixed inset-x-0 z-10 bg-indigo-ink'>
+      <div className='fixed inset-x-0 z-10 bg-indigo-ink'>
         <div
-          className={classNames('flex w-full justify-between ease-out', {
+          className={classNames('flex w-full boxed-layout transition-all justify-between ease-out', {
             'h-[0px] opacity-0 duration-500': !isVisible,
             'h-16 duration-500 md:h-[84px]': isVisible,
           })}>
-          <div className='my-auto flex'>
-            KADU
+          <div
+            className={classNames('my-auto transition-all flex', {
+              'opacity-0 duration-100': !isVisible,
+              'duration-1000': isVisible,
+            })}>
+            <NextImage src={'assets/kaduLogoTransparent.svg'} alt={''} height={70} width={70} />
+            <div className='flex items-center ml-1.5 text-white font-medium italic text-22'>ADU</div>
             <div className='ml-10 hidden gap-x-[30px] text-15 md:flex'></div>
           </div>
           <div className='hidden items-center md:flex'></div>
