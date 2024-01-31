@@ -1,7 +1,11 @@
-import {FC} from 'react';
+import Login from '../../components/Login';
 
 const Page = async () => {
-  return <div>Test</div>;
+  return (
+    <div className='flex items-center min-h-full justify-center'>
+      <Login />
+    </div>
+  );
 };
 
 const fetchData = async () => {};
