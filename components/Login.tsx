@@ -32,10 +32,10 @@ const Login: FC = () => {
 
   return (
     <div className='flex w-full items-center flex-col'>
-      <div onClick={() => router.push('/')} className='mb-2 cursor-pointer'>
+      <div onClick={() => router.push('/')} className='mb-4 cursor-pointer'>
         <NextImage src={'assets/kaduLogoTransparent.svg'} alt={''} height={70} width={70} />
       </div>
-      <div className='max-w-[500px] px-6 py-6 w-full rounded-lg drop-shadow-xl bg-white'>
+      <div className='max-w-[500px] border border-grey border-opacity-30 px-6 py-6 w-full rounded-lg drop-shadow-xl bg-white'>
         <div className='font-semibold text-22 mb-10'>
           Login <div className='border-t border-grey mt-1.5' />
         </div>

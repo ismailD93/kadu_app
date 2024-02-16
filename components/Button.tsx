@@ -41,7 +41,7 @@ const InnerButton = ({
   return (
     <div
       className={classNames('flex rounded-md leading-none w-full flex-row items-center', innerClassName, {
-        'text-white bg-blueberry': variant === 'primary',
+        'text-white bg-blueberry hover:opacity-100 opacity-95': variant === 'primary',
         'text-blueberry border border-blueberry': variant === 'outline',
         'text-white border border-white': variant === 'white',
       })}>

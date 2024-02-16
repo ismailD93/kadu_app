@@ -24,6 +24,12 @@ const config: Config = {
       red: '#D0312D',
     },
     fontSize: {
+      10: [
+        '10px',
+        {
+          lineHeight: '16px',
+        },
+      ],
       13: [
         '13px',
         {
