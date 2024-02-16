@@ -7,7 +7,7 @@ import BurgerMenuIcon from '../icons/BurgerMenuIcon';
 import Button from './Button';
 import {usePathname, useSearchParams} from 'next/navigation';
 import Link from 'next/link';
-import WhiteModal from './Modal';
+import Modal from './Modal';
 
 interface NavigationProps {
   className?: string;
@@ -73,7 +73,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
             <BurgerMenuIcon />
           </div>
         </div>
-        <WhiteModal title='Menu' onClose={() => setShowMenu(false)} open={showMenu}>
+        <Modal title='Menu' onClose={() => setShowMenu(false)} open={showMenu}>
           <div className='mt-20 mx-auto gap-y-10 text-center flex flex-col gap-x-4'>
             <Link href='/' className='text-36 font-medium'>
               Über uns
@@ -86,7 +86,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
               <Button link='register' label='Registrieren' />
             </div>
           </div>
-        </WhiteModal>
+        </Modal>
       </div>
     </>
   );
