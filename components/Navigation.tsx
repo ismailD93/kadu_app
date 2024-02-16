@@ -4,6 +4,7 @@ import {FC, useEffect, useState} from 'react';
 import NextImage from 'next/image';
 import classNames from 'classnames';
 import BurgerMenuIcon from '../icons/BurgerMenuIcon';
+import Button from './Button';
 
 interface NavigationProps {
   className?: string;
@@ -46,11 +47,15 @@ const Navigation: FC<NavigationProps> = ({className}) => {
               'opacity-0 duration-100': !isVisible,
               'duration-1000': isVisible,
             })}>
-            <NextImage src={'assets/kaduLogoTransparent.svg'} alt={''} height={70} width={70} />
+            <NextImage src={'assets/kaduLogoHell.svg'} alt={''} height={50} width={50} />
             <div className='flex items-center ml-1.5 text-white font-medium italic text-22'>ADU</div>
             <div className='ml-10 hidden gap-x-[30px] text-15 md:flex'></div>
           </div>
           <div className='hidden items-center md:flex'></div>
+          <div className='flex my-auto gap-x-5 justify-end'>
+            <Button link='login' variant='white' label='Login' />
+            <Button link='register' label='Registrieren' />
+          </div>
           <div onClick={() => setShowMenu(true)} className='flex cursor-pointer items-center pl-3 md:hidden'>
             <BurgerMenuIcon />
           </div>
