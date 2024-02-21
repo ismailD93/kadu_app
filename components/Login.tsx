@@ -7,10 +7,12 @@ import TextInput from './TextInput';
 import Link from 'next/link';
 import Button from './Button';
 import NextImage from 'next/image';
+import {useRouter} from 'next/navigation';
 
 const Login: FC = () => {
   const [userNameFalse, setUserNameFalse] = useState();
   const [pwFalse, setPwFalse] = useState();
+  const router = useRouter();
   const formik = useFormik({
     validateOnChange: false,
     validateOnBlur: false,
@@ -30,10 +32,10 @@ const Login: FC = () => {
 
   return (
     <div className='flex w-full items-center flex-col'>
-      <div className='mb-2'>
+      <div onClick={() => router.push('/')} className='mb-4 cursor-pointer'>
         <NextImage src={'assets/kaduLogoTransparent.svg'} alt={''} height={70} width={70} />
       </div>
-      <div className='max-w-[500px] px-6 py-6 w-full rounded-lg drop-shadow-xl bg-white'>
+      <div className='max-w-[500px] border border-grey border-opacity-30 px-6 py-6 w-full rounded-lg drop-shadow-xl bg-white'>
         <div className='font-semibold text-22 mb-10'>
           Login <div className='border-t border-grey mt-1.5' />
         </div>
@@ -46,7 +48,7 @@ const Login: FC = () => {
               onBlur={formik.handleBlur}
               error={!userNameFalse ? formik.errors.userName : ''}
               isValidating={false}
-            />{' '}
+            />
             <TextInput
               name='pw'
               type='password'
