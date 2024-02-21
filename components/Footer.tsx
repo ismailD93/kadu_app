@@ -17,8 +17,8 @@ const Footer: FC = () => {
         </div>
         <div className='flex text-white flex-col gap-x-5 w-full md:w-1/2 justify-end'>
           <div className='flex justify-center gap-x-10'>
-            <span className='text-22'>Über uns</span>
-            <span className='text-22'>Kontakt</span>
+            <span className='text-22 cursor-pointer'>Über uns</span>
+            <span className='text-22 cursor-pointer'>Kontakt</span>
           </div>
           <div className='mt-14 flex flex-wrap font-light justify-center gap-x-3 text-10 text-white md:mt-10'>
             {linkArr.map((item, index) => {

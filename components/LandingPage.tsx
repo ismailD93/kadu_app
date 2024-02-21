@@ -2,6 +2,7 @@
 import {FC} from 'react';
 import Card from './Card';
 import NextImage from 'next/image';
+import Button from './Button';
 
 const LandingPage: FC = () => {
   return (
@@ -35,6 +36,12 @@ const LandingPage: FC = () => {
             <div className='absolute bottom-5 right-36'>
               <NextImage src={'/assets/investieren.png'} width={50} height={50} alt={'sharing'} />
             </div>
+            <div className='absolute top-3 right-48'>
+              <NextImage src={'/assets/book.png'} width={50} height={50} alt={'sharing'} />
+            </div>
+            <div className='absolute bottom-0 left-14'>
+              <NextImage src={'/assets/lend.png'} width={50} height={50} alt={'sharing'} />
+            </div>
           </div>
         </div>
       </div>
@@ -66,6 +73,13 @@ const LandingPage: FC = () => {
             <span className='text-22 font-medium'>was ihr braucht und könnt gleichzeitig Anderen helfen.</span>
           </div>
         </div>
+      </div>
+      <div className='max-w-[700px] text-center my-5 p-20 mx-auto rounded-md shadow-md'>
+        <span className='text-36 font-medium'>
+          Entdeckt die Möglichkeiten,spart Geld und unterstützt einen verantwortungsbewussten Konsum. Seid dabei und
+          macht den Unterschied!
+        </span>
+        <Button label='Registrieren' buttonBig={true} className='mx-auto mt-10' />
       </div>
     </div>
   );
