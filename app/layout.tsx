@@ -58,12 +58,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='de' className='scroll-smooth flex flex-col min-h-full'>
-      <body className={`${barlow.className} flex-1 flex flex-col`}>
-        <Navigation />
-        <div className='w-full flex-1'>{children}</div>
-        <Footer />
-      </body>
+    <html lang='de' className='scroll-smooth'>
+      <body className={`${barlow.className} flex-1 flex flex-col`}>{children}</body>
     </html>
   );
 }

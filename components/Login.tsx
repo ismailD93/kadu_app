@@ -9,7 +9,11 @@ import Button from './Button';
 import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
 
-const Login: FC = () => {
+interface LoginProps {
+  userLoggedIn: boolean;
+}
+
+const Login: FC<LoginProps> = ({userLoggedIn}) => {
   const [userNameFalse, setUserNameFalse] = useState();
   const [pwFalse, setPwFalse] = useState();
   const router = useRouter();
@@ -23,7 +27,7 @@ const Login: FC = () => {
     },
     onSubmit: async (values) => {
       try {
-        console.log(values);
+        router.push('/dashboard');
       } catch (error) {
         console.error(error, 'Error');
       }

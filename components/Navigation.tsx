@@ -11,9 +11,10 @@ import Modal from './Modal';
 
 interface NavigationProps {
   className?: string;
+  dashboard?: boolean;
 }
 
-const Navigation: FC<NavigationProps> = ({className}) => {
+const Navigation: FC<NavigationProps> = ({className, dashboard}) => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -56,19 +57,34 @@ const Navigation: FC<NavigationProps> = ({className}) => {
             })}>
             <NextImage src={'assets/kaduLogo.svg'} alt={''} height={50} width={50} />
             <div className='flex items-center ml-1.5 text-indigo-ink font-medium italic text-22'>ADU</div>
-            <div className='my-auto ml-10 hidden md:flex gap-x-4'>
-              <Link href='/' className='text-18 font-medium'>
-                Über uns
-              </Link>
-              <Link href='/' className='text-18 font-medium'>
-                Kontakt
+            {dashboard ? (
+              <div className='my-auto ml-10 hidden md:flex gap-x-4'>
+                <Link href={''}> Durchsuchen </Link>
+                <Link href={''}> Profil </Link>
+              </div>
+            ) : (
+              <div className='my-auto ml-10 hidden md:flex gap-x-4'>
+                <Link href='/' className='text-18 font-medium'>
+                  Über uns
+                </Link>
+                <Link href='/' className='text-18 font-medium'>
+                  Kontakt
+                </Link>
+              </div>
+            )}
+          </div>
+          {dashboard ? (
+            <div className='my-auto'>
+              <Link className='text-18' href={''}>
+                Ausloggen
               </Link>
             </div>
-          </div>
-          <div className='hidden md:flex my-auto gap-x-5 justify-end'>
-            <Button link='login' variant='outline' label='Login' />
-            <Button link='register' label='Registrieren' />
-          </div>
+          ) : (
+            <div className='hidden md:flex my-auto gap-x-5 justify-end'>
+              <Button link='login' variant='outline' label='Login' />
+              <Button link='register' label='Registrieren' />
+            </div>
+          )}
           <div onClick={() => setShowMenu(true)} className='flex cursor-pointer items-center pl-3 md:hidden'>
             <BurgerMenuIcon />
           </div>
