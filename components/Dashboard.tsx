@@ -5,20 +5,26 @@ import Overview from './dashboardComponents/Overview';
 import Borrow from './dashboardComponents/Borrow';
 import Inventory from './dashboardComponents/Inventory';
 import Lend from './dashboardComponents/Lend';
+import Settings from './dashboardComponents/Settings';
 
 const Dashboard: FC = () => {
   const [clickedTab, setClickedTab] = useState<string>('');
-  console.log(clickedTab);
 
   return (
     <div className='w-full h-full'>
-      <DashboardTemplate tab={clickedTab} selectedTap={(value) => setClickedTab(value)}>
-        {clickedTab === 'inventory' ? (
+      <DashboardTemplate
+        tab={clickedTab}
+        selectedTap={(value) => {
+          setClickedTab(value);
+        }}>
+        {clickedTab === 'watchList' ? (
           <Inventory />
         ) : clickedTab === 'borrow' ? (
           <Borrow />
         ) : clickedTab === 'lend' ? (
           <Lend />
+        ) : clickedTab === 'settings' ? (
+          <Settings />
         ) : (
           <Overview />
         )}

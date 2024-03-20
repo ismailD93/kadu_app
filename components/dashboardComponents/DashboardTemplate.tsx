@@ -1,6 +1,7 @@
 'use client';
 import classNames from 'classnames';
 import {FC, ReactNode, useState} from 'react';
+import {WheelIcon} from '../../icons/WheelIcon';
 
 interface DashboardTemplateProps {
   children: ReactNode;
@@ -11,7 +12,8 @@ export type SelectedProps = {
   overview?: boolean;
   lend?: boolean;
   borrow?: boolean;
-  inventory?: boolean;
+  watchList?: boolean;
+  settings?: boolean;
 };
 
 const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, tab}) => {
@@ -19,18 +21,19 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
     overview: false,
     lend: false,
     borrow: false,
-    inventory: false,
+    watchList: false,
+    settings: false,
   });
-  const tabs: {key: 'overview' | 'borrow' | 'lend' | 'inventory'; label: string}[] = [
+  const tabs: {key: 'overview' | 'borrow' | 'lend' | 'watchList'; label: string}[] = [
     {key: 'overview', label: 'Overview'},
     {key: 'borrow', label: 'Ausgeliehen'},
     {key: 'lend', label: 'Verliehen'},
-    {key: 'inventory', label: 'Inventar'},
+    {key: 'watchList', label: 'Merkliste'},
   ];
 
   return (
-    <div className='flex h-full'>
-      <div className='w-72 fixed border-r border-grey flex flex-col min-h-full'>
+    <div className='flex h-full select-none'>
+      <div className='w-72 fixed justify-between border-r border-grey flex flex-col min-h-full'>
         <div className='flex flex-col w-full items-center'>
           <div className='border-b'>
             <div className='size-20 mt-5 mb-2 bg-blueberry rounded-md'></div>
@@ -38,25 +41,34 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
           </div>
           <div className='flex flex-col w-full mt-10'>
             {tabs.map((item, index) => {
-              console.log(selected[item.key]);
               return (
                 <div
                   onClick={() => {
                     selectedTap?.(item.key), setSelected({[item.key]: [item.key]});
                   }}
                   key={index}
-                  className={classNames('py-3 cursor-pointer border-t border-t-grey w-full flex justify-center', {
-                    'bg-indigo-ink text-white': selected[item.key],
-                    'hover:bg-blueberry hover:text-white': !selected[item.key],
-                  })}>
+                  className={classNames(
+                    'py-3 select-none cursor-pointer border-t border-t-grey w-full flex justify-center',
+                    {
+                      'bg-indigo-ink text-white': selected[item.key] && tab !== 'settings',
+                      'hover:bg-blueberry hover:text-white': !selected[item.key] || tab === 'settings',
+                    }
+                  )}>
                   {item.label}
                 </div>
               );
             })}
           </div>
         </div>
+        <div
+          onClick={() => {
+            selectedTap?.('settings');
+          }}
+          className='h-full mx-auto mb-10'>
+          <WheelIcon className='h-10 w-10' />
+        </div>
       </div>
-      <div className='w-full flex ml-[324px] m-10'>{children}</div>
+      <div className='w-full flex ml-[324px] m-10 relative'>{children}</div>
     </div>
   );
 };

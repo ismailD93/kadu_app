@@ -74,7 +74,7 @@ const LandingPage: FC = () => {
           </div>
         </div>
       </div>
-      <div className='max-w-[700px] text-center my-5 p-20 mx-auto rounded-md shadow-md'>
+      <div className='max-w-[700px] text-center my-5 p-20 mx-auto '>
         <span className='text-36 font-medium'>
           Entdeckt die Möglichkeiten,spart Geld und unterstützt einen verantwortungsbewussten Konsum. Seid dabei und
           macht den Unterschied!

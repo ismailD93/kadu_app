@@ -1,11 +1,11 @@
 import {FC} from 'react';
 
-const Inventory: FC = () => {
+const WatchList: FC = () => {
   return (
     <div>
-      <div>Inventory</div>
+      <div>WatchList</div>
     </div>
   );
 };
 
-export default Inventory;
+export default WatchList;
