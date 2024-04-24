@@ -14,6 +14,7 @@ interface Props extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
   wrapperClassName?: string;
   isValidating: boolean;
   variant?: 'white' | 'grey-bg';
+  touched?: boolean;
 }
 
 export const TextInput: FC<Props> = ({
@@ -23,6 +24,7 @@ export const TextInput: FC<Props> = ({
   isValidating,
   required,
   variant = 'grey-bg',
+  touched,
   ...rest
 }) => {
   const [reactiveError, setReactiveError] = useState<string>();
@@ -49,6 +51,7 @@ export const TextInput: FC<Props> = ({
           rest.className
         )}
       />
+      {!!reactiveError && touched && <span className='text-red mt-1'>{error}</span>}
     </div>
   );
 };

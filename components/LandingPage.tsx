@@ -7,7 +7,7 @@ import Button from './Button';
 const LandingPage: FC = () => {
   return (
     <div className='flex relative flex-col min-h-full justify-center mt-24'>
-      <div className='mt-10 bg-blueberry py-10'>
+      <div className='bg-blueberry py-10'>
         <div className='flex boxed md:flex-row flex-col'>
           <div className='flex justify-between w-full md:w-1/2'>
             <div className='flex flex-col text-white'>

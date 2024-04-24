@@ -12,7 +12,16 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hidebar::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.hidebar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 @layer utilities {
   .input {
     @apply w-full px-5 py-3.5 rounded-md text-black outline-none;
