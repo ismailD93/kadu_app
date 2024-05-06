@@ -79,7 +79,7 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
             <div className='w-full border-t border-grey' />
           </div>
         </div>
-        <Button link='/register' className='w-full' type='submit' label={'Erstelle ein Konto'} />
+        <Button link='/register' className='w-full' label={'Erstelle ein Konto'} />
       </div>
     </div>
   );

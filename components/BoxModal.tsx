@@ -55,7 +55,7 @@ const BoxModal: FC<BoxModalProps> = ({onClose, open, title, children, share}) =>
               transition={{duration: 0.6}}
               className='fixed bottom-0 right-0 z-20 flex w-full flex-col bg-white px-5 text-dark-blue md:hidden'>
               <div className='absolute right-5 top-5 my-auto flex w-full cursor-pointer justify-end' onClick={onClose}>
-                <CloseIcon />
+                <CloseIcon className='h-6 w-6' />{' '}
               </div>
               <div className='mt-20 flex flex-col text-22'>{title}</div>
               <div className='no-scrollbar mb-10 mt-5 flex h-full w-full flex-1 flex-col text-dark-blue'>

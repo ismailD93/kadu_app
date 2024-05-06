@@ -72,7 +72,6 @@ const Lend: FC = () => {
                             addedAt: item.addedAt,
                             preis: item.preis,
                             image: item.image,
-
                             lendTill: item.lendTill,
                             productName: item.productName,
                           });

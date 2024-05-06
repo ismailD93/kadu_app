@@ -29,7 +29,7 @@ const Button = ({
           <InnerButton buttonBig={buttonBig} innerClassName={innerClassName} {...rest} variant={variant} />
         </Link>
       )}
-      {type === 'submit' && (
+      {(type === 'submit' || !link) && (
         <button className='w-full' disabled={disabled} {...rest}>
           <InnerButton buttonBig={buttonBig} innerClassName={innerClassName} {...rest} variant={variant} />
         </button>
