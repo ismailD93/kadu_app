@@ -7,7 +7,7 @@ import Button from './Button';
 const LandingPage: FC = () => {
   return (
     <div className='flex relative flex-col min-h-full justify-center mt-24'>
-      <div className='mt-10 bg-blueberry py-10'>
+      <div className='bg-blueberry py-10'>
         <div className='flex boxed md:flex-row flex-col'>
           <div className='flex justify-between w-full md:w-1/2'>
             <div className='flex flex-col text-white'>
@@ -74,7 +74,7 @@ const LandingPage: FC = () => {
           </div>
         </div>
       </div>
-      <div className='max-w-[700px] text-center my-5 p-20 mx-auto rounded-md shadow-md'>
+      <div className='max-w-[700px] text-center my-5 p-20 mx-auto '>
         <span className='text-36 font-medium'>
           Entdeckt die Möglichkeiten,spart Geld und unterstützt einen verantwortungsbewussten Konsum. Seid dabei und
           macht den Unterschied!

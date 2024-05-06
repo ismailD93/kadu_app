@@ -16,7 +16,7 @@ const Card: FC<CardProps> = ({text, title, src}) => {
           <div className='text-22 text-center mt-10'>{text}</div>
         </div>
         <div className='relative aspect-[8/5] w-full max-w-[500px]'>
-          <NextImage src={src} fill alt={'sharing'} />
+          <NextImage src={src} fill className='object-contain' alt={'sharing'} />
         </div>
       </div>
     </div>

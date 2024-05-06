@@ -1,9 +1,9 @@
-import Login from '../../components/Login';
+import Dashboard from '../../components/Dashboard';
 
 const Page = async () => {
   return (
-    <div className='flex items-center min-h-full justify-center'>
-      <Login userLoggedIn />
+    <div className='w-full'>
+      <Dashboard />
     </div>
   );
 };

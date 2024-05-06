@@ -22,6 +22,8 @@ const config: Config = {
       grey: '#bbb',
       black: '#050301',
       red: '#D0312D',
+      orange: '#ffa500',
+      yellow: '#FCE205',
     },
     fontSize: {
       10: [

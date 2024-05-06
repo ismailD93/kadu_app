@@ -31,7 +31,7 @@ export const TextAreaInput = ({
     setReactiveError(error);
   }, [error, isValidating]);
   return (
-    <div className='flex h-full w-full flex-col'>
+    <div className='flex border rounded-md h-full w-full flex-col'>
       <textarea
         {...rest}
         placeholder={addRequiredStar(rest.placeholder, required)}
