@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import Footer from '../../components/Footer';
 
 export default async function PageLayout({children}: {children: ReactNode}) {

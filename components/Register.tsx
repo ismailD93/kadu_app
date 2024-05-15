@@ -8,7 +8,14 @@ import Button from './Button';
 import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
 import {registerFormSchema} from '../validation/registerSchema';
-
+const HEADERS = {'Content-Type': 'application/json'};
+export type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  userName: string;
+  pw: string;
+};
 const Login: FC = () => {
   const [userNameFalse, setUserNameFalse] = useState();
   const [pwFalse, setPwFalse] = useState();
@@ -23,11 +30,25 @@ const Login: FC = () => {
       email: '',
       userName: '',
       pw: '',
-      pwRepeat: '',
+      // pwRepeat: '',
     },
     onSubmit: async (values) => {
       try {
         console.log(values);
+
+        const result = await fetch(`http://localhost:5258/api/User`, {
+          method: 'POST',
+          headers: HEADERS,
+          mode: 'cors',
+          body: JSON.stringify({
+            Name: values.firstName,
+            lastName: values.lastName,
+            userName: values.userName,
+            email: values.email,
+            Password: values.pw,
+          }),
+        });
+        console.log(await result.json());
       } catch (error) {
         console.error(error, 'Error');
       }
@@ -47,7 +68,7 @@ const Login: FC = () => {
           <div className='flex text-black flex-col gap-y-4'>
             <TextInput
               name='firstName'
-              placeholder='Benutzername'
+              placeholder='Name'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={!userNameFalse ? formik.errors.userName : ''}
@@ -55,7 +76,7 @@ const Login: FC = () => {
             />
             <TextInput
               name='lastName'
-              placeholder='Passwort'
+              placeholder='Nachname'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={!pwFalse ? formik.errors.pw : ''}

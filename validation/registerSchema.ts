@@ -6,5 +6,5 @@ export const registerFormSchema = () =>
     email: Yup.string().required('E-Mail ist erforderlich !!'),
     pw: Yup.string().required('Passwort ist erforderlich!'),
     userName: Yup.string().required('Benutzername erforderlich!'),
-    pwRepeat: Yup.string().required('Wiederhole dein Passwort'),
+    // pwRepeat: Yup.string().required('Wiederhole dein Passwort'),
   });
