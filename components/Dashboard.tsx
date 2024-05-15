@@ -7,12 +7,17 @@ import Inventory from './dashboardComponents/Inventory';
 import Lend from './dashboardComponents/Lend';
 import Settings from './dashboardComponents/Settings';
 
-const Dashboard: FC = () => {
+interface DashboardProps {
+  userId?: string;
+}
+
+const Dashboard: FC<DashboardProps> = ({userId}) => {
   const [clickedTab, setClickedTab] = useState<string>('');
 
   return (
     <div className='w-full h-full'>
       <DashboardTemplate
+        userId={userId}
         tab={clickedTab}
         selectedTap={(value) => {
           setClickedTab(value);

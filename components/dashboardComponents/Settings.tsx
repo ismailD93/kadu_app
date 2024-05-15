@@ -4,7 +4,8 @@ interface SettingsProps {}
 const Settings: FC<SettingsProps> = ({}) => {
   return (
     <div>
-      <div>SETTINGS</div>
+      <div>Profilbild ändern</div>
+      <div>Passwort ändern</div>
     </div>
   );
 };

@@ -79,7 +79,7 @@ const LandingPage: FC = () => {
           Entdeckt die Möglichkeiten,spart Geld und unterstützt einen verantwortungsbewussten Konsum. Seid dabei und
           macht den Unterschied!
         </span>
-        <Button label='Registrieren' buttonBig={true} className='mx-auto mt-10' />
+        <Button link='/register' label='Registrieren' buttonBig={true} className='mx-auto mt-10' />
       </div>
     </div>
   );

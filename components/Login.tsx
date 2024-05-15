@@ -8,10 +8,13 @@ import Link from 'next/link';
 import Button from './Button';
 import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
+import {signIn} from '../auth.config';
 
 interface LoginProps {
   userLoggedIn: boolean;
 }
+
+const HEADERS = {'Content-Type': 'application/json'};
 
 const Login: FC<LoginProps> = ({userLoggedIn}) => {
   const [userNameFalse, setUserNameFalse] = useState();
@@ -27,9 +30,24 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
     },
     onSubmit: async (values) => {
       try {
-        router.push('/dashboard');
+        const success = await signIn('credentials', {
+          redirect: false,
+          userName: values.userName,
+          password: values.pw,
+        });
+
+        console.log(success);
+        router.push(`/dashboard`);
       } catch (error) {
-        console.error(error, 'Error');
+        return {
+          state: 'ERROR',
+          message: 'failed to login!',
+          toast: {
+            title: 'Fehlermeldung',
+            message: 'Anmeldung fehlgeschlagen.',
+            retry: true,
+          },
+        };
       }
     },
   });

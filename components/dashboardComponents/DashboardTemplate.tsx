@@ -2,11 +2,14 @@
 import classNames from 'classnames';
 import {FC, ReactNode, useState} from 'react';
 import {WheelIcon} from '../../icons/WheelIcon';
+import Button from '../Button';
+import Link from 'next/link';
 
 interface DashboardTemplateProps {
   children: ReactNode;
   selectedTap?: (value: string) => void;
   tab?: string;
+  userId?: string;
 }
 export type SelectedProps = {
   overview?: boolean;
@@ -16,7 +19,7 @@ export type SelectedProps = {
   settings?: boolean;
 };
 
-const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, tab}) => {
+const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, tab, userId}) => {
   const [selected, setSelected] = useState<SelectedProps>({
     overview: false,
     lend: false,
@@ -60,6 +63,11 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
             })}
           </div>
         </div>
+        <Link
+          href={`/dashboard?userId=${userId}/search`}
+          className='mx-auto border-indigo-ink border px-4 py-3 rounded-full hover:text-white hover:bg-indigo-ink'>
+          Artikel suchen
+        </Link>
         <div
           onClick={() => {
             selectedTap?.('settings');
