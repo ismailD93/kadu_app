@@ -2,16 +2,18 @@ import {FC} from 'react';
 import Dashboard from '../../components/Dashboard';
 import {auth} from '../../auth';
 import {SessionProvider} from 'next-auth/react';
-import {BASE_PATH} from '../../auth.config';
+import {redirect} from 'next/navigation';
 
 const Page: FC<{searchParams?: {userId?: string}}> = async ({searchParams}) => {
   const userId = searchParams?.userId;
   const session = await auth();
-  console.log(session);
+
+  if (!session) redirect('/login');
+
   return (
-    <SessionProvider basePath={BASE_PATH} session={session}>
+    <SessionProvider basePath={'/api/auth'} session={session}>
       <div className='w-full'>
-        <Dashboard userId={userId} />
+        <Dashboard userName={session.user?.name || ''} userId={userId} />
       </div>
     </SessionProvider>
   );

@@ -10,6 +10,7 @@ interface DashboardTemplateProps {
   selectedTap?: (value: string) => void;
   tab?: string;
   userId?: string;
+  userName?: string;
 }
 export type SelectedProps = {
   overview?: boolean;
@@ -19,7 +20,7 @@ export type SelectedProps = {
   settings?: boolean;
 };
 
-const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, tab, userId}) => {
+const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, tab, userId, userName}) => {
   const [selected, setSelected] = useState<SelectedProps>({
     overview: false,
     lend: false,
@@ -38,9 +39,9 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
     <div className='flex h-full select-none'>
       <div className='w-72 fixed justify-between border-r border-grey flex flex-col min-h-full'>
         <div className='flex flex-col w-full items-center'>
-          <div className='border-b'>
+          <div className='items-center text-center'>
             <div className='size-20 mt-5 mb-2 bg-blueberry rounded-md'></div>
-            <span className=''>USERNAME</span>
+            <span className='uppercase underline underline-offset-4 text-22'>{userName}</span>
           </div>
           <div className='flex flex-col w-full mt-10'>
             {tabs.map((item, index) => {

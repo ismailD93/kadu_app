@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import loginFormSchema from '../validation/loginSchema';
 import TextInput from './TextInput';
@@ -8,7 +8,10 @@ import Link from 'next/link';
 import Button from './Button';
 import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
-import {signIn} from '../auth.config';
+import {auth, signIn} from '../auth';
+import {loginAction} from '@/actions/LoginAction';
+import {ToastContainer, toast} from 'react-toastify';
+import {useSession} from 'next-auth/react';
 
 interface LoginProps {
   userLoggedIn: boolean;
@@ -16,9 +19,8 @@ interface LoginProps {
 
 const HEADERS = {'Content-Type': 'application/json'};
 
-const Login: FC<LoginProps> = ({userLoggedIn}) => {
-  const [userNameFalse, setUserNameFalse] = useState();
-  const [pwFalse, setPwFalse] = useState();
+const Login: FC<LoginProps> = () => {
+  const [clicked, setClicked] = useState<boolean>(false);
   const router = useRouter();
   const formik = useFormik({
     validateOnChange: false,
@@ -30,14 +32,9 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
     },
     onSubmit: async (values) => {
       try {
-        const success = await signIn('credentials', {
-          redirect: false,
-          userName: values.userName,
-          password: values.pw,
-        });
+        const success = await loginAction(values.userName, values.pw);
 
-        console.log(success);
-        router.push(`/dashboard`);
+        router.push('/dashboard');
       } catch (error) {
         return {
           state: 'ERROR',
@@ -52,6 +49,16 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
     },
   });
 
+  useEffect(() => {
+    if (clicked) {
+      const errorMessages = Object.values(formik.errors).map((error, index) => <div key={index}>{error}</div>);
+      toast.error(<div>{errorMessages}</div>, {
+        position: 'top-center',
+        toastId: 'FormikErrors',
+      });
+    }
+  }, [formik.errors]);
+
   return (
     <div className='flex w-full items-center flex-col'>
       <div onClick={() => router.push('/')} className='mb-4 cursor-pointer'>
@@ -61,6 +68,9 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
         <div className='font-semibold text-22 mb-10'>
           Login <div className='border-t border-grey mt-1.5' />
         </div>
+        <div className='toast-container'>
+          <ToastContainer limit={2} />
+        </div>
         <form onSubmit={formik.handleSubmit} id='loginForm'>
           <div className='flex text-black flex-col gap-y-4'>
             <TextInput
@@ -68,7 +78,7 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
               placeholder='Benutzername'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!userNameFalse ? formik.errors.userName : ''}
+              error={formik.errors.userName}
               isValidating={false}
             />
             <TextInput
@@ -77,15 +87,21 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
               placeholder='Passwort'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!pwFalse ? formik.errors.pw : ''}
+              error={formik.errors.pw}
               isValidating={false}
             />
           </div>
           <div className='flex flex-col w-full justify-center mt-5 gap-x-2 mb-2'>
-            <Button form='loginForm' className='w-full' type='submit' label={'Anmelden'} />
-            <Link className='text-[#0096ff] text-center mt-3' href='/changePw'>
+            <Button
+              onClick={() => setClicked(true)}
+              form='loginForm'
+              className='w-full'
+              type='submit'
+              label={'Anmelden'}
+            />
+            {/* <Link className='text-[#0096ff] text-center mt-3' href='/changePw'>
               Passwort vergessen ?
-            </Link>
+            </Link> */}
           </div>
         </form>
         <div className='flex mt-7 mb-3'>
@@ -97,7 +113,7 @@ const Login: FC<LoginProps> = ({userLoggedIn}) => {
             <div className='w-full border-t border-grey' />
           </div>
         </div>
-        <Button link='/register' className='w-full' label={'Erstelle ein Konto'} />
+        <Button link='/register' className='w-full' type='button' label={'Erstelle ein Konto'} />
       </div>
     </div>
   );

@@ -9,15 +9,17 @@ import Settings from './dashboardComponents/Settings';
 
 interface DashboardProps {
   userId?: string;
+  userName?: string;
 }
 
-const Dashboard: FC<DashboardProps> = ({userId}) => {
+const Dashboard: FC<DashboardProps> = ({userId, userName}) => {
   const [clickedTab, setClickedTab] = useState<string>('');
 
   return (
     <div className='w-full h-full'>
       <DashboardTemplate
         userId={userId}
+        userName={userName}
         tab={clickedTab}
         selectedTap={(value) => {
           setClickedTab(value);

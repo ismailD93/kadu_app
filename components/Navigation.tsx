@@ -22,7 +22,6 @@ const Navigation: FC<NavigationProps> = ({className, dashboard}) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const hideNav = pathname === '/login' || pathname === '/register';
-  console.log(pathname);
 
   useEffect(() => {
     const handleScroll = () => {

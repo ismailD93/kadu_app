@@ -32,8 +32,6 @@ const SearchBar: FC<SearchBarProps> = ({filterActive = true}) => {
     });
   }
 
-  console.log('selected:', selectedMonth, 'applied:', appliedMonth);
-
   return (
     <div className='bg-blue'>
       <div className={classNames('boxed', {'pt-10': filterActive, 'py-10': !filterActive})}>

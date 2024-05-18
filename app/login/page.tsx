@@ -1,4 +1,5 @@
-import Login from '../../components/Login';
+import {auth} from '@/auth';
+import Login from '@/components/Login';
 
 const Page = async () => {
   return (

@@ -1,9 +1,15 @@
+import Footer from '../components/Footer';
 import LandingPage from '../components/LandingPage';
+import Navigation from '../components/Navigation';
 
 const Page = async () => {
   return (
     <>
-      <LandingPage />
+      <div className='h-screen my-auto'>
+        <Navigation />
+        <LandingPage />
+        <Footer />
+      </div>
     </>
   );
 };

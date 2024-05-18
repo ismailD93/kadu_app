@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import TextInput from './TextInput';
 import Link from 'next/link';
@@ -8,17 +8,12 @@ import Button from './Button';
 import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
 import {registerFormSchema} from '../validation/registerSchema';
+import {Slide, ToastContainer, toast} from 'react-toastify';
 const HEADERS = {'Content-Type': 'application/json'};
-export type User = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  userName: string;
-  pw: string;
-};
+
 const Login: FC = () => {
-  const [userNameFalse, setUserNameFalse] = useState();
-  const [pwFalse, setPwFalse] = useState();
+  const [clicked, setClicked] = useState<boolean>(false);
+  const [createSuccess, setCreateSuccess] = useState<boolean>(false);
   const router = useRouter();
   const formik = useFormik({
     validateOnChange: false,
@@ -34,8 +29,6 @@ const Login: FC = () => {
     },
     onSubmit: async (values) => {
       try {
-        console.log(values);
-
         const result = await fetch(`http://localhost:5258/api/User`, {
           method: 'POST',
           headers: HEADERS,
@@ -48,12 +41,54 @@ const Login: FC = () => {
             Password: values.pw,
           }),
         });
-        console.log(await result.json());
+        const success = await result.json();
+        const userNameExist = success?.message?.length;
+
+        if (userNameExist) {
+          toast.error('Benutzername bereits vergeben', {
+            position: 'top-center',
+            toastId: 'FormikErrors',
+          });
+        }
+
+        if (success?.userId) {
+          toast.success('Sie haben sich erfolgreich registriert', {
+            position: 'top-center',
+            autoClose: 3000, //3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            toastId: 'Register',
+            transition: Slide,
+          });
+          setCreateSuccess(true);
+        }
       } catch (error) {
         console.error(error, 'Error');
+        toast.error('Beim Registrieren ist ein Fehler aufgetreten', {
+          position: 'top-center',
+          toastId: 'Register',
+        });
       }
     },
   });
+
+  useEffect(() => {
+    if (clicked) {
+      const errorMessages = Object.values(formik.errors).map((error, index) => <div key={index}>{error}</div>);
+      toast.error(<div>{errorMessages}</div>, {
+        position: 'top-center',
+        toastId: 'FormikErrors',
+      });
+    }
+  }, [formik.errors]);
+
+  useEffect(() => {
+    if (createSuccess) {
+      router.push('login');
+    }
+  }, [createSuccess]);
 
   return (
     <div className='flex w-full items-center flex-col'>
@@ -65,13 +100,16 @@ const Login: FC = () => {
           Registrieren <div className='border-t border-grey mt-1.5' />{' '}
         </div>
         <form onSubmit={formik.handleSubmit} id='registerForm'>
+          <div className='toast-container'>
+            <ToastContainer limit={2} />
+          </div>
           <div className='flex text-black flex-col gap-y-4'>
             <TextInput
               name='firstName'
               placeholder='Name'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!userNameFalse ? formik.errors.userName : ''}
+              error={formik.errors.userName}
               isValidating={false}
             />
             <TextInput
@@ -79,7 +117,7 @@ const Login: FC = () => {
               placeholder='Nachname'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!pwFalse ? formik.errors.pw : ''}
+              error={formik.errors.pw}
               isValidating={false}
             />
             <TextInput
@@ -87,7 +125,7 @@ const Login: FC = () => {
               placeholder='Email'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!pwFalse ? formik.errors.pw : ''}
+              error={formik.errors.pw}
               isValidating={false}
             />
             <TextInput
@@ -95,7 +133,7 @@ const Login: FC = () => {
               placeholder='Benutzername'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!userNameFalse ? formik.errors.userName : ''}
+              error={formik.errors.userName}
               isValidating={false}
             />
             <TextInput
@@ -104,10 +142,10 @@ const Login: FC = () => {
               placeholder='Passwort'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={!pwFalse ? formik.errors.pw : ''}
+              error={formik.errors.pw}
               isValidating={false}
             />
-            <TextInput
+            {/* <TextInput
               name='pwRepeat'
               type='password'
               placeholder='Passwort wiederholen'
@@ -115,10 +153,16 @@ const Login: FC = () => {
               onBlur={formik.handleBlur}
               error={!pwFalse ? formik.errors.pw : ''}
               isValidating={false}
-            />
+            /> */}
           </div>
           <div className='flex w-full justify-center mt-5 gap-x-2 mb-2'>
-            <Button form='registerForm' className='w-full' type='submit' label={'Registrieren'} />
+            <Button
+              form='registerForm'
+              onClick={() => setClicked(true)}
+              className='w-full'
+              type='submit'
+              label={'Registrieren'}
+            />
           </div>
           <Link className='text-[#0096ff]' href='/login'>
             Anmelden

@@ -1,46 +1,15 @@
-import {revalidatePath} from 'next/cache';
-import {signIn} from '../auth.config';
+'use server';
 
-type ActionState =
-  | {
-      state: 'VALIDATION_ERROR';
-      errors: {
-        email?: string[];
-        password?: string[];
-      };
-      toast?: {
-        title: string;
-        message: string;
-      };
-    }
-  | {
-      state: 'ERROR';
-      message: string;
-      toast?: {
-        title: string;
-        message: string;
-        retry: boolean;
-      };
-    }
-  | {
-      state: 'SUCCESS';
-      toast?: {
-        message: string;
-      };
-    }
-  | undefined;
+import {signIn} from '@/auth';
 
-type Action = (formState: ActionState, userName?: string, pw?: string) => Promise<ActionState>;
-
-const action: Action = async (_formState, userName?: string, pw?: string) => {
-  'use server';
-
+export async function loginAction(userName: string, pw: string) {
   try {
-    await signIn('credentials', {
+    const session = await signIn('credentials', {
       redirect: false,
       userName: userName,
-      pw: pw,
+      password: pw,
     });
+    return session;
   } catch (error) {
     return {
       state: 'ERROR',
@@ -52,14 +21,4 @@ const action: Action = async (_formState, userName?: string, pw?: string) => {
       },
     };
   }
-
-  revalidatePath('/dashboard');
-
-  return {
-    state: 'SUCCESS',
-  };
-};
-
-const LoginFormAction = {action};
-
-export default LoginFormAction;
+}

@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
-
 const nextConfig = {
   trailingSlash: false,
-
+  output: 'standalone',
   async headers() {
     return [
       {
@@ -23,19 +22,11 @@ const nextConfig = {
       },
     ];
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:5258/api/:path*',
-      },
-    ];
-  },
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/home',
+        source: '/home',
+        destination: '/',
         permanent: true,
       },
     ];

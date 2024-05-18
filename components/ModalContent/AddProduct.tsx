@@ -24,7 +24,6 @@ const AddProduct: FC<AddProduct> = ({name, pricePerDay, productCreated}) => {
       image: '',
     },
     onSubmit: async (values) => {
-      console.log('Values', values);
       if (values) {
         productCreated?.(true);
       }
