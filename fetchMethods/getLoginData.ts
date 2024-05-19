@@ -1,7 +1,6 @@
 const HEADERS = {'Content-Type': 'application/json'};
 
 export async function getLoginData(userName: string, password: string) {
-  console.log(JSON.stringify({userName, password}));
   const result = await fetch(`http://localhost:5258/api/User/login`, {
     method: 'POST',
     headers: HEADERS,

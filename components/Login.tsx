@@ -4,14 +4,11 @@ import {FC, useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import loginFormSchema from '../validation/loginSchema';
 import TextInput from './TextInput';
-import Link from 'next/link';
 import Button from './Button';
 import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
-import {auth, signIn} from '../auth';
 import {loginAction} from '@/actions/LoginAction';
 import {ToastContainer, toast} from 'react-toastify';
-import {useSession} from 'next-auth/react';
 
 interface LoginProps {
   userLoggedIn: boolean;
@@ -33,17 +30,22 @@ const Login: FC<LoginProps> = () => {
     onSubmit: async (values) => {
       try {
         const success = await loginAction(values.userName, values.pw);
-
-        router.push('/dashboard');
+        if (success.state) {
+          toast.error('Anmelde Daten sind falsch!!', {
+            position: 'top-center',
+            toastId: 'Login',
+          });
+        } else {
+          router.push('/dashboard');
+        }
       } catch (error) {
+        toast.error('Anmeldung fehlgeschlagen.', {
+          position: 'top-center',
+          toastId: 'Login',
+        });
         return {
           state: 'ERROR',
           message: 'failed to login!',
-          toast: {
-            title: 'Fehlermeldung',
-            message: 'Anmeldung fehlgeschlagen.',
-            retry: true,
-          },
         };
       }
     },

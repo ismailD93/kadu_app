@@ -3,6 +3,7 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {type FC, type ReactNode} from 'react';
 import {CloseIcon} from '../icons/CloseIcon';
 import useLockBodyScroll from '../hooks/useLockedBody';
+import {ProductCardsProps} from './ProductCards';
 
 export interface BoxModalProps {
   onClose: () => void;
@@ -14,7 +15,7 @@ export interface BoxModalProps {
   share?: boolean;
 }
 
-const BoxModal: FC<BoxModalProps> = ({onClose, open, title, children, share}) => {
+const BoxModal: FC<BoxModalProps> = ({onClose, open, title, children}) => {
   useLockBodyScroll(open, false);
 
   return (
@@ -40,7 +41,7 @@ const BoxModal: FC<BoxModalProps> = ({onClose, open, title, children, share}) =>
               animate={{top: '50%', translateY: '-50%'}}
               exit={{top: 1500}}
               transition={{duration: 0.6}}
-              className='fixed overflow-y-auto hidebar inset-x-0 z-20 mx-auto h-full max-h-[425px] w-[746px] bg-white px-10 text-dark-blue max-md:!hidden'>
+              className='fixed shadow-lg overflow-y-auto hidebar inset-x-0 z-20 mx-auto h-full max-h-[425px] w-[746px] bg-white px-10 text-dark-blue max-md:!hidden'>
               <div className='absolute right-5 top-5 cursor-pointer' onClick={onClose}>
                 <CloseIcon className='h-6 w-6' />
               </div>

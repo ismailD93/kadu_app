@@ -26,12 +26,24 @@ const Button = ({
     <div className={classNames(className, {'w-max': !className?.includes('w-')})}>
       {!!link && (
         <Link href={link}>
-          <InnerButton buttonBig={buttonBig} innerClassName={innerClassName} {...rest} variant={variant} />
+          <InnerButton
+            disabled={disabled}
+            buttonBig={buttonBig}
+            innerClassName={innerClassName}
+            {...rest}
+            variant={variant}
+          />
         </Link>
       )}
       {(type === 'submit' || !link) && (
-        <button className='w-full' disabled={disabled} {...rest}>
-          <InnerButton buttonBig={buttonBig} innerClassName={innerClassName} {...rest} variant={variant} />
+        <button type={type} className='w-full' disabled={disabled} {...rest}>
+          <InnerButton
+            disabled={disabled}
+            buttonBig={buttonBig}
+            innerClassName={innerClassName}
+            {...rest}
+            variant={variant}
+          />
         </button>
       )}
     </div>
@@ -45,7 +57,9 @@ const InnerButton = ({
   variant,
   innerClassName,
   buttonBig,
+  disabled,
 }: {
+  disabled: Props['disabled'];
   label: Props['label'];
   variant?: Props['variant'];
   innerClassName: Props['innerClassName'];
@@ -54,9 +68,10 @@ const InnerButton = ({
   return (
     <div
       className={classNames('flex rounded-md leading-none w-full flex-row items-center', innerClassName, {
-        'text-white bg-blueberry hover:opacity-100 opacity-95': variant === 'primary',
+        'text-white bg-blueberry hover:opacity-100 opacity-95': variant === 'primary' && !disabled,
         'text-blueberry border border-blueberry': variant === 'outline',
         'text-white border border-white': variant === 'white',
+        'bg-grey': disabled,
       })}>
       <div
         className={classNames('gap-x-2.5', {

@@ -20,10 +20,12 @@ const config: Config = {
       white: '#ffffff',
       'light-grey': '#f0f0f0',
       grey: '#bbb',
+      'dark-grey': '#636363',
       black: '#050301',
       red: '#D0312D',
       orange: '#ffa500',
       yellow: '#FCE205',
+      green: '#256f46',
     },
     fontSize: {
       10: [

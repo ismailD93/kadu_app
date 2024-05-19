@@ -6,13 +6,17 @@ import Borrow from './dashboardComponents/Borrow';
 import Inventory from './dashboardComponents/Inventory';
 import Lend from './dashboardComponents/Lend';
 import Settings from './dashboardComponents/Settings';
+import {Product} from '@/constants/types';
 
 interface DashboardProps {
-  userId?: string;
+  userId: string;
   userName?: string;
+  products?: Product[];
+  productAmount?: number;
+  lendings?: {lendedProducts: Product[] | []; borrowedProducts: Product[] | []};
 }
 
-const Dashboard: FC<DashboardProps> = ({userId, userName}) => {
+const Dashboard: FC<DashboardProps> = ({userId, userName, products, productAmount, lendings}) => {
   const [clickedTab, setClickedTab] = useState<string>('');
 
   return (
@@ -27,13 +31,13 @@ const Dashboard: FC<DashboardProps> = ({userId, userName}) => {
         {clickedTab === 'watchList' ? (
           <Inventory />
         ) : clickedTab === 'borrow' ? (
-          <Borrow />
+          <Borrow products={lendings?.borrowedProducts} />
         ) : clickedTab === 'lend' ? (
-          <Lend />
+          <Lend lendedProducts={lendings?.lendedProducts} owner={userName} products={products} userId={userId} />
         ) : clickedTab === 'settings' ? (
           <Settings />
         ) : (
-          <Overview />
+          <Overview username={userName} productAmount={productAmount} />
         )}
       </DashboardTemplate>
     </div>

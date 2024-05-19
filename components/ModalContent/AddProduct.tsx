@@ -9,23 +9,51 @@ import UploadInput from '../UploadInput';
 interface AddProduct {
   name?: string;
   pricePerDay?: string;
+  userId: string;
   productCreated?: (success: boolean) => void;
 }
 
-const AddProduct: FC<AddProduct> = ({name, pricePerDay, productCreated}) => {
+const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
   const formik = useFormik({
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: addProductSchema(),
     initialValues: {
-      name: '',
+      Title: '',
       pricePerDay: '',
-      productDecription: '',
+      Description: '',
       image: '',
+      category: '',
+      condition: '',
     },
     onSubmit: async (values) => {
-      if (values) {
-        productCreated?.(true);
+      const formData = new FormData();
+      formData.append('Title', values.Title);
+      formData.append('PricePerDay', values.pricePerDay);
+      formData.append('Description', values.Description);
+      formData.append('Category', values.category);
+      formData.append('Condition', values.condition);
+      formData.append('Owner', userId);
+      if (values.image) {
+        formData.append('image', values.image);
+      }
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
+      try {
+        const response = await fetch('http://localhost:5258/api/Product', {
+          method: 'POST',
+          body: formData,
+        });
+        if (response.ok) {
+          productCreated?.(true);
+        } else {
+          console.error('Failed to create product');
+          productCreated?.(false);
+        }
+      } catch (error) {
+        console.error('Error creating product:', error);
+        productCreated?.(false);
       }
     },
   });
@@ -34,13 +62,13 @@ const AddProduct: FC<AddProduct> = ({name, pricePerDay, productCreated}) => {
     <form onSubmit={formik.handleSubmit} id='addProduct'>
       <div className='flex flex-col gap-y-4'>
         <TextInput
-          name='name'
+          name='Title'
           placeholder='Produktname'
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.errors.name}
+          error={formik.errors.Title}
           isValidating={false}
-          touched={formik.touched.name}
+          touched={formik.touched.Title}
         />
         <TextInput
           name='pricePerDay'
@@ -52,8 +80,22 @@ const AddProduct: FC<AddProduct> = ({name, pricePerDay, productCreated}) => {
           isValidating={false}
           touched={formik.touched.pricePerDay}
         />
+        <TextInput
+          name='condition'
+          placeholder='Zustand'
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          isValidating={false}
+        />
+        <TextInput
+          name='category'
+          placeholder='Kategorie'
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          isValidating={false}
+        />
         <TextAreaInput
-          name='productDecription'
+          name='Description'
           placeholder='Produktbeschreibung'
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -61,7 +103,7 @@ const AddProduct: FC<AddProduct> = ({name, pricePerDay, productCreated}) => {
         />
         <UploadInput
           onChange={(event) => {
-            formik.setFieldValue('image', event?.currentTarget?.files?.[0]);
+            formik.setFieldValue('image', event.currentTarget.files?.[0]);
           }}
         />
       </div>
@@ -69,4 +111,5 @@ const AddProduct: FC<AddProduct> = ({name, pricePerDay, productCreated}) => {
     </form>
   );
 };
+
 export default AddProduct;

@@ -1,24 +1,44 @@
 import classNames from 'classnames';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import ProductCards, {ProductCardsProps} from '../ProductCards';
 import {ChevronIcon} from '../../icons/ChevronIcon';
 import {PlusIcon} from '../../icons/PlusIcon';
 import BoxModal from '../BoxModal';
 import AddProduct from '../ModalContent/AddProduct';
 import ProductDetail from '../ModalContent/ProductDetail';
+import {Product, User} from '@/constants/types';
+import {getProductImage} from '@/fetchMethods/getProductImage';
+import useGetImageUrl from '@/hooks/getImageUrl';
 
-const Lend: FC = () => {
+interface LendProps {
+  userId: string;
+  products?: Product[];
+  owner?: string;
+  lendedProducts?: Product[];
+}
+
+const Lend: FC<LendProps> = ({userId, products, owner, lendedProducts}) => {
   const [open, setOpen] = useState<{lend?: boolean; offer?: boolean}>({lend: false, offer: false});
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openProductModal, setOpenProductModal] = useState<boolean>(false);
   const [clickedProduct, setClickedProduct] = useState<ProductCardsProps>({});
+  const [imageSrc, setImageSrc] = useState<{productId: string; imageUrl: string}[]>([]);
 
-  const products: ProductCardsProps[] = [
-    {addedAt: '20.03.24', preis: '234', status: 'Verfügbar zum verleih', productName: 'Saal'},
-    {addedAt: '30.02.24', preis: '422', status: 'Verfügbar zum verleih', productName: 'Bus'},
-    {addedAt: '20.03.23', preis: '12', status: 'Verfügbar zum verleih', productName: 'Rasenmäher'},
-    {addedAt: '22.02.24', preis: '23.4', status: 'Verfügbar zum verleih', productName: 'Laptop'},
-  ];
+  useEffect(() => {
+    const getImage = async () => {
+      if (!products) return;
+      for (let index = 0; index < products?.length; index++) {
+        const product = products[index];
+        const image = await getProductImage(product.id);
+        if (!image) return;
+        setImageSrc((prev) => [...prev, {productId: product.id, imageUrl: image}]);
+      }
+    };
+    getImage();
+  }, []);
+
+  const lendedImageUrl: {productId: string; imageUrl: string}[] = useGetImageUrl(products);
+  console.log(lendedProducts);
 
   return (
     <>
@@ -39,8 +59,39 @@ const Lend: FC = () => {
             <>
               <div className='border-b mx-6' />
               <div className={classNames('select-none border-x px-4 border-b py-4', {})}>
-                <div className='flex w-full cursor-pointer items-center justify-between text-18 lg:text-22'>
-                  PRODUKTE
+                <div className='flex flex-col gap-y-3'>
+                  {lendedProducts?.map((item, index) => {
+                    let url = '';
+                    lendedImageUrl.forEach((image) => {
+                      if (image.productId === item.id) {
+                        url = image.imageUrl;
+                      }
+                    });
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setClickedProduct({
+                            imageUrl: url,
+                            owner: owner,
+                            productName: item.title,
+                            description: item.description,
+                            preis: item.pricePerDay,
+                          });
+                          if (clickedProduct.productName) {
+                            setOpenProductModal(true);
+                          }
+                        }}>
+                        <ProductCards
+                          imageUrl={url}
+                          owner={owner}
+                          productName={item.title}
+                          description={item.description}
+                          preis={item.pricePerDay}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </>
@@ -63,28 +114,34 @@ const Lend: FC = () => {
               <div className='border-b mx-6' />
               <div className={classNames('select-none border-x px-4 border-b py-4', {})}>
                 <div className='flex flex-col gap-y-3'>
-                  {products.map((item, index) => {
+                  {products?.map((item, index) => {
+                    let url = '';
+                    imageSrc.forEach((image) => {
+                      if (image.productId === item.id) {
+                        url = image.imageUrl;
+                      }
+                    });
                     return (
                       <div
                         key={index}
                         onClick={() => {
                           setClickedProduct({
-                            addedAt: item.addedAt,
-                            preis: item.preis,
-                            image: item.image,
-                            lendTill: item.lendTill,
-                            productName: item.productName,
+                            imageUrl: url,
+                            owner: owner,
+                            productName: item.title,
+                            description: item.description,
+                            preis: item.pricePerDay,
                           });
                           if (clickedProduct.productName) {
                             setOpenProductModal(true);
                           }
                         }}>
                         <ProductCards
-                          productName={item.productName}
-                          addedAt={item.addedAt}
-                          lendTill={item.lendTill}
-                          status={item.status}
-                          preis={item.preis}
+                          imageUrl={url}
+                          owner={owner}
+                          productName={item.title}
+                          description={item.description}
+                          preis={item.pricePerDay}
                         />
                       </div>
                     );
@@ -103,10 +160,10 @@ const Lend: FC = () => {
         </div>
       </div>
       <BoxModal title='Produkt hinzufügen' onClose={() => setOpenModal(false)} open={openModal}>
-        <AddProduct productCreated={(success) => setOpenModal(!success)} />
+        <AddProduct userId={userId} productCreated={(success) => setOpenModal(!success)} />
       </BoxModal>
-      <BoxModal title={clickedProduct.productName} onClose={() => setOpenProductModal(false)} open={openProductModal}>
-        <ProductDetail />
+      <BoxModal onClose={() => setOpenProductModal(false)} open={openProductModal}>
+        <ProductDetail productDetails={clickedProduct} />
       </BoxModal>
     </>
   );

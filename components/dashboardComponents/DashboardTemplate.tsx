@@ -4,6 +4,7 @@ import {FC, ReactNode, useState} from 'react';
 import {WheelIcon} from '../../icons/WheelIcon';
 import Button from '../Button';
 import Link from 'next/link';
+import {signOut} from 'next-auth/react';
 
 interface DashboardTemplateProps {
   children: ReactNode;
@@ -34,6 +35,11 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
     {key: 'lend', label: 'Verliehen'},
     {key: 'watchList', label: 'Merkliste'},
   ];
+  const onLogout = () => {
+    setTimeout(() => {
+      signOut({redirect: true, callbackUrl: '/login'});
+    }, 200);
+  };
 
   return (
     <div className='flex h-full select-none'>
@@ -64,18 +70,19 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
             })}
           </div>
         </div>
-        <Link
-          href={`/dashboard?userId=${userId}/search`}
-          className='mx-auto border-indigo-ink border px-4 py-3 rounded-full hover:text-white hover:bg-indigo-ink'>
-          Artikel suchen
-        </Link>
+
         <div
+          className='mx-auto mb-10 hover:bg-white hover:text-indigo-ink border px-4 py-3 rounded-full text-white bg-indigo-ink'
+          onClick={() => onLogout()}>
+          Abmelden
+        </div>
+        {/* <div
           onClick={() => {
             selectedTap?.('settings');
           }}
           className='h-full mx-auto mb-10'>
           <WheelIcon className='h-10 w-10' />
-        </div>
+        </div> */}
       </div>
       <div className='w-full flex ml-[324px] m-10 relative'>{children}</div>
     </div>

@@ -9,11 +9,13 @@ import NextImage from 'next/image';
 import {useRouter} from 'next/navigation';
 import {registerFormSchema} from '../validation/registerSchema';
 import {Slide, ToastContainer, toast} from 'react-toastify';
+import useDebounce from '@/hooks/useDebounce';
 const HEADERS = {'Content-Type': 'application/json'};
 
 const Login: FC = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const [createSuccess, setCreateSuccess] = useState<boolean>(false);
+  const debouncedRedirect = useDebounce(createSuccess, 3000);
   const router = useRouter();
   const formik = useFormik({
     validateOnChange: false,
@@ -86,9 +88,13 @@ const Login: FC = () => {
 
   useEffect(() => {
     if (createSuccess) {
-      router.push('login');
+      const timer = setTimeout(() => {
+        router.push('login');
+      }, 2000);
+
+      return () => clearTimeout(timer);
     }
-  }, [createSuccess]);
+  }, [createSuccess, router]);
 
   return (
     <div className='flex w-full items-center flex-col'>

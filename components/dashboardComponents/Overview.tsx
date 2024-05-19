@@ -4,39 +4,30 @@ import OverviewCardsRow from './OverviewCardsRow';
 
 interface OverviewProps {
   username?: string;
+  productAmount?: number;
 }
 
-const Overview: FC<OverviewProps> = ({username}) => {
+const Overview: FC<OverviewProps> = ({username, productAmount}) => {
   return (
-    <div className='flex flex-col gap-y-6'>
-      <div className='flex lg:flex-row gap-6 flex-col'>
-        <div className='w-full lg:w-2/3'>
+    <div className='flex w-full flex-col gap-y-6'>
+      <div className='flex w-full lg:flex-row gap-6 flex-col'>
+        <div className='w-full'>
           <OverviewCardsRow
             title={`Hi ${username || 'Mustermann'},`}
             text={
-              'Hier hast du eine kurze Übersicht über deine Benachrichtigungen und wie viele deine Inventar Liste angeschaut haben'
+              'Hier hast du eine kurze Übersicht über Merkliste und wie viele Produkte du in deine Inventar Liste hast.'
             }
             variant='userInfo'
-            imageSrc='/assets/mail.png'
+            imageSrc='/assets/sharing.png'
           />
-        </div>
-        <div className='w-full lg:w-1/3'>
-          <OverviewCardsBox title={'Übersicht'} variant='lendBorrow' />
         </div>
       </div>
-      <div className='flex lg:flex-row gap-6 flex-col'>
-        <div className='w-full lg:w-1/3'>
-          <OverviewCardsBox title={'Übersicht'} />
+      <div className='flex w-full lg:flex-row gap-6 flex-col'>
+        <div className='w-full'>
+          <OverviewCardsBox productAmount={productAmount} title={'Übersicht'} variant='lendBorrow' />
         </div>
-        <div className='w-full lg:w-2/3'>
-          <OverviewCardsRow
-            title={`Hi ${username || 'Mustermann'},`}
-            text={
-              'Hier hast du eine kurze Übersicht über deine Benachrichtigungen und wie viele deine Inventar Liste angeschaut haben'
-            }
-            variant='userInfo'
-            imageSrc='/assets/mail.png'
-          />
+        <div className='w-full'>
+          <OverviewCardsBox title={'Merkliste'} />
         </div>
       </div>
     </div>
