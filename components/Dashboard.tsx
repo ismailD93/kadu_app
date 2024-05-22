@@ -37,7 +37,12 @@ const Dashboard: FC<DashboardProps> = ({userId, userName, products, productAmoun
         ) : clickedTab === 'settings' ? (
           <Settings />
         ) : (
-          <Overview username={userName} productAmount={productAmount} />
+          <Overview
+            lendedAmount={lendings?.lendedProducts.length}
+            borrowAmount={lendings?.borrowedProducts.length}
+            username={userName}
+            productAmount={productAmount}
+          />
         )}
       </DashboardTemplate>
     </div>

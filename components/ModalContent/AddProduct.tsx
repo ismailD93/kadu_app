@@ -5,6 +5,7 @@ import TextInput from '../TextInput';
 import Button from '../Button';
 import TextAreaInput from '../TextAreaInput';
 import UploadInput from '../UploadInput';
+import {useRouter} from 'next/navigation';
 
 interface AddProduct {
   name?: string;
@@ -14,6 +15,7 @@ interface AddProduct {
 }
 
 const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
+  const router = useRouter();
   const formik = useFormik({
     validateOnChange: false,
     validateOnBlur: false,
@@ -37,9 +39,6 @@ const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
       if (values.image) {
         formData.append('image', values.image);
       }
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(`${key}: ${value}`);
-      // }
       try {
         const response = await fetch('http://localhost:5258/api/Product', {
           method: 'POST',
@@ -47,6 +46,7 @@ const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
         });
         if (response.ok) {
           productCreated?.(true);
+          router.refresh();
         } else {
           console.error('Failed to create product');
           productCreated?.(false);
@@ -86,6 +86,8 @@ const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isValidating={false}
+          error={formik.errors.condition}
+          touched={formik.touched.condition}
         />
         <TextInput
           name='category'
@@ -93,6 +95,8 @@ const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isValidating={false}
+          error={formik.errors.category}
+          touched={formik.touched.category}
         />
         <TextAreaInput
           name='Description'
@@ -100,6 +104,7 @@ const AddProduct: FC<AddProduct> = ({productCreated, userId}) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isValidating={false}
+          error={formik.errors.Description}
         />
         <UploadInput
           onChange={(event) => {

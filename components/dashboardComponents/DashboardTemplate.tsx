@@ -33,7 +33,7 @@ const DashboardTemplate: FC<DashboardTemplateProps> = ({children, selectedTap, t
     {key: 'overview', label: 'Overview'},
     {key: 'borrow', label: 'Ausgeliehen'},
     {key: 'lend', label: 'Verliehen'},
-    {key: 'watchList', label: 'Merkliste'},
+    // {key: 'watchList', label: 'Merkliste'},
   ];
   const onLogout = () => {
     setTimeout(() => {

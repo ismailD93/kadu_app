@@ -10,6 +10,7 @@ import {getLending} from '@/fetchMethods/getLending';
 
 const Page: FC<{searchParams?: {userId?: string}}> = async ({searchParams}) => {
   const session = await auth();
+  console.log(session);
   if (!session) redirect('/login');
   const usermail = session.user?.email;
   const username = session.user?.name;

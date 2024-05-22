@@ -9,6 +9,8 @@ import ProductDetail from '../ModalContent/ProductDetail';
 import {Product, User} from '@/constants/types';
 import {getProductImage} from '@/fetchMethods/getProductImage';
 import useGetImageUrl from '@/hooks/getImageUrl';
+import {deleteProduct} from '@/fetchMethods/deleteProduct';
+import {useRouter} from 'next/navigation';
 
 interface LendProps {
   userId: string;
@@ -20,10 +22,11 @@ interface LendProps {
 const Lend: FC<LendProps> = ({userId, products, owner, lendedProducts}) => {
   const [open, setOpen] = useState<{lend?: boolean; offer?: boolean}>({lend: false, offer: false});
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [openProductModal, setOpenProductModal] = useState<boolean>(false);
   const [clickedProduct, setClickedProduct] = useState<ProductCardsProps>({});
   const [imageSrc, setImageSrc] = useState<{productId: string; imageUrl: string}[]>([]);
-
+  const router = useRouter();
   useEffect(() => {
     const getImage = async () => {
       if (!products) return;
@@ -38,7 +41,6 @@ const Lend: FC<LendProps> = ({userId, products, owner, lendedProducts}) => {
   }, []);
 
   const lendedImageUrl: {productId: string; imageUrl: string}[] = useGetImageUrl(products);
-  console.log(lendedProducts);
 
   return (
     <>
@@ -59,40 +61,31 @@ const Lend: FC<LendProps> = ({userId, products, owner, lendedProducts}) => {
             <>
               <div className='border-b mx-6' />
               <div className={classNames('select-none border-x px-4 border-b py-4', {})}>
-                <div className='flex flex-col gap-y-3'>
-                  {lendedProducts?.map((item, index) => {
-                    let url = '';
-                    lendedImageUrl.forEach((image) => {
-                      if (image.productId === item.id) {
-                        url = image.imageUrl;
-                      }
-                    });
-                    return (
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setClickedProduct({
-                            imageUrl: url,
-                            owner: owner,
-                            productName: item.title,
-                            description: item.description,
-                            preis: item.pricePerDay,
-                          });
-                          if (clickedProduct.productName) {
-                            setOpenProductModal(true);
-                          }
-                        }}>
-                        <ProductCards
-                          imageUrl={url}
-                          owner={owner}
-                          productName={item.title}
-                          description={item.description}
-                          preis={item.pricePerDay}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
+                {lendedProducts?.length ? (
+                  <div className='flex flex-col gap-y-3'>
+                    {lendedProducts?.map((item, index) => {
+                      let url = '';
+                      lendedImageUrl.forEach((image) => {
+                        if (image.productId === item.id) {
+                          url = image.imageUrl;
+                        }
+                      });
+                      return (
+                        <div key={index}>
+                          <ProductCards
+                            imageUrl={url}
+                            owner={owner}
+                            productName={item.title}
+                            description={item.description}
+                            preis={item.pricePerDay}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className='text-18'>Sie haben aktuell keine Produkte die sie Verliehen haben</div>
+                )}
               </div>
             </>
           )}
@@ -113,40 +106,46 @@ const Lend: FC<LendProps> = ({userId, products, owner, lendedProducts}) => {
             <>
               <div className='border-b mx-6' />
               <div className={classNames('select-none border-x px-4 border-b py-4', {})}>
-                <div className='flex flex-col gap-y-3'>
-                  {products?.map((item, index) => {
-                    let url = '';
-                    imageSrc.forEach((image) => {
-                      if (image.productId === item.id) {
-                        url = image.imageUrl;
-                      }
-                    });
-                    return (
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setClickedProduct({
-                            imageUrl: url,
-                            owner: owner,
-                            productName: item.title,
-                            description: item.description,
-                            preis: item.pricePerDay,
-                          });
-                          if (clickedProduct.productName) {
-                            setOpenProductModal(true);
-                          }
-                        }}>
-                        <ProductCards
-                          imageUrl={url}
-                          owner={owner}
-                          productName={item.title}
-                          description={item.description}
-                          preis={item.pricePerDay}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
+                {products?.length ? (
+                  <div className='flex flex-col gap-y-3'>
+                    {products?.map((item, index) => {
+                      let url = '';
+                      imageSrc.forEach((image) => {
+                        if (image.productId === item.id) {
+                          url = image.imageUrl;
+                        }
+                      });
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => {
+                            setClickedProduct({
+                              imageUrl: url,
+                              owner: owner,
+                              productName: item.title,
+                              description: item.description,
+                              preis: item.pricePerDay,
+                              id: item.id,
+                            });
+                            if (clickedProduct.productName) {
+                              // setDeleteModal(true);
+                            }
+                          }}>
+                          <ProductCards
+                            imageUrl={url}
+                            onClick={() => setDeleteModal(true)}
+                            owner={owner}
+                            productName={item.title}
+                            description={item.description}
+                            preis={item.pricePerDay}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className='text-18'>Sie haben keine Produkte die sie zum Verleih anbieten</div>
+                )}
               </div>
             </>
           )}
@@ -162,8 +161,15 @@ const Lend: FC<LendProps> = ({userId, products, owner, lendedProducts}) => {
       <BoxModal title='Produkt hinzufügen' onClose={() => setOpenModal(false)} open={openModal}>
         <AddProduct userId={userId} productCreated={(success) => setOpenModal(!success)} />
       </BoxModal>
-      <BoxModal onClose={() => setOpenProductModal(false)} open={openProductModal}>
-        <ProductDetail productDetails={clickedProduct} />
+      <BoxModal onClose={() => setDeleteModal(false)} open={deleteModal}>
+        <ProductDetail
+          onDelete={async () => {
+            await deleteProduct(clickedProduct.id);
+            setDeleteModal(false);
+            router.refresh();
+          }}
+          productDetails={clickedProduct}
+        />
       </BoxModal>
     </>
   );

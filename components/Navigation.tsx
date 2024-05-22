@@ -5,7 +5,7 @@ import NextImage from 'next/image';
 import classNames from 'classnames';
 import BurgerMenuIcon from '../icons/BurgerMenuIcon';
 import Button from './Button';
-import {usePathname, useSearchParams} from 'next/navigation';
+import {usePathname, useRouter, useSearchParams} from 'next/navigation';
 import Link from 'next/link';
 import Modal from './Modal';
 
@@ -16,6 +16,7 @@ interface NavigationProps {
 
 const Navigation: FC<NavigationProps> = ({className, dashboard}) => {
   const pathname = usePathname();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -63,11 +64,8 @@ const Navigation: FC<NavigationProps> = ({className, dashboard}) => {
               </div>
             ) : (
               <div className='my-auto ml-10 hidden md:flex gap-x-4'>
-                <Link href='/' className='text-18 font-medium'>
+                <Link href='/ueber-uns' className='text-18 font-medium'>
                   Über uns
-                </Link>
-                <Link href='/' className='text-18 font-medium'>
-                  Kontakt
                 </Link>
               </div>
             )}

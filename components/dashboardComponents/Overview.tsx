@@ -5,9 +5,11 @@ import OverviewCardsRow from './OverviewCardsRow';
 interface OverviewProps {
   username?: string;
   productAmount?: number;
+  lendedAmount?: number;
+  borrowAmount?: number;
 }
 
-const Overview: FC<OverviewProps> = ({username, productAmount}) => {
+const Overview: FC<OverviewProps> = ({username, productAmount, lendedAmount, borrowAmount}) => {
   return (
     <div className='flex w-full flex-col gap-y-6'>
       <div className='flex w-full lg:flex-row gap-6 flex-col'>
@@ -24,7 +26,13 @@ const Overview: FC<OverviewProps> = ({username, productAmount}) => {
       </div>
       <div className='flex w-full lg:flex-row gap-6 flex-col'>
         <div className='w-full'>
-          <OverviewCardsBox productAmount={productAmount} title={'Übersicht'} variant='lendBorrow' />
+          <OverviewCardsBox
+            borrowed={borrowAmount}
+            lend={lendedAmount}
+            productAmount={productAmount}
+            title={'Übersicht'}
+            variant='lendBorrow'
+          />
         </div>
         <div className='w-full'>
           <OverviewCardsBox title={'Merkliste'} />

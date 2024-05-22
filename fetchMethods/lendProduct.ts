@@ -1,4 +1,5 @@
 import {addDays} from 'date-fns';
+import {NextResponse} from 'next/server';
 
 const HEADERS = {'Content-Type': 'application/json'};
 
@@ -20,7 +21,7 @@ export async function lendProduct(
       body: JSON.stringify({productId, lendingUserId, ownerId, startingAt, endingAt}),
     });
     const lending = await result.json();
-    return lending;
+    return NextResponse.json({success: true, lending});
   } catch (error) {
     console.error('Error fetching products:', error);
     return [];

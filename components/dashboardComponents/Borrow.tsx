@@ -30,21 +30,25 @@ const Borrow: FC<BorrowProsp> = ({products}) => {
         <>
           <div className='border-b mx-6' />
           <div className={classNames('select-none border-x px-4 border-b py-4', {})}>
-            <div className='flex flex-col gap-y-3'>
-              {products?.map((item, index) => {
-                let url = '';
-                imageurl.forEach((image) => {
-                  if (image.productId === item.id) {
-                    url = image.imageUrl;
-                  }
-                });
-                return (
-                  <div key={index}>
-                    <ProductCards imageUrl={url} productName={item.title} preis={item.pricePerDay} />
-                  </div>
-                );
-              })}
-            </div>
+            {products?.length ? (
+              <div className='flex flex-col gap-y-3'>
+                {products?.map((item, index) => {
+                  let url = '';
+                  imageurl.forEach((image) => {
+                    if (image.productId === item.id) {
+                      url = image.imageUrl;
+                    }
+                  });
+                  return (
+                    <div key={index}>
+                      <ProductCards imageUrl={url} productName={item.title} preis={item.pricePerDay} />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className='text-18'>Sie haben aktuell keine Produkte die sie Ausgeliehen haben</div>
+            )}
           </div>
         </>
       )}

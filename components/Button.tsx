@@ -7,7 +7,7 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
   label: string;
   innerClassName?: string;
   type?: 'button' | 'submit';
-  variant?: 'outline' | 'primary' | 'white';
+  variant?: 'outline' | 'primary' | 'white' | 'red';
   buttonBig?: boolean;
 }
 
@@ -71,6 +71,7 @@ const InnerButton = ({
         'text-white bg-blueberry hover:opacity-100 opacity-95': variant === 'primary' && !disabled,
         'text-blueberry border border-blueberry': variant === 'outline',
         'text-white border border-white': variant === 'white',
+        'text-red border border-red': variant === 'red',
         'bg-grey': disabled,
       })}>
       <div

@@ -15,14 +15,11 @@ export async function getProductLendings(productId?: string) {
     }
 
     const lendings: Lending[] = await result.json();
-    console.log('Fetched lendings:', lendings);
 
     const productLendings = lendings.filter((lending: Lending) => {
       if (!productId) return;
       return parseInt(lending.productId) === parseInt(productId);
     });
-
-    console.log('Filtered lendings for product:', productLendings);
 
     return productLendings;
   } catch (error) {
